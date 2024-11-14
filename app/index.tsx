@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Image, Text, TextInput, Alert, TouchableOpacity, StyleSheet, SafeAreaView, Platform, KeyboardAvoidingView, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { useRouter } from "expo-router";
+import { getMusicData } from "./api-client";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 // Styled Components
 const MainContainer = styled.View`
@@ -66,6 +68,7 @@ const ErrorText = styled.Text`
 `;
 
 export default function App() {
+  getMusicData().then(data => console.warn(data))
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({
@@ -133,25 +136,17 @@ export default function App() {
   
     return isValid;
   };
+
+  const onPressShowArtist = () => {
+    router.push({
+      pathname: "./home",
+    });
+  };
   
 
   const handleSubmit = () => {
     if (validateForm()) {
-      Alert.alert(
-        'Éxito',
-        'Inicio de sesión exitoso',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              setEmail('');
-              setPassword('');
-              setErrors({ email: '', password: '' });
-            }
-          }
-        ],
-        { cancelable: false }
-      );
+      onPressShowArtist();
     } else {
       Alert.alert(
         'Error de validación',
